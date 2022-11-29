@@ -16,9 +16,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final settings = ValueNotifier(ThemeSettings(
-    sourceColor: Colors.pink, // Replace this color
+    sourceColor: Color(0xff00cbe6), // Replace this color
     themeMode: ThemeMode.system,
   ));
+  
   @override
   Widget build(BuildContext context) {
     return BlocProvider<PlaybackBloc>(
@@ -36,6 +37,8 @@ class _MyAppState extends State<MyApp> {
               child: ValueListenableBuilder<ThemeSettings>(
                 valueListenable: settings,
                 builder: (context, value, _) {
+                  final theme = ThemeProvider.of(context);
+                  final colors = Theme.of(context).colorScheme;
                   // Create theme instance
                   return MaterialApp.router(
                     debugShowCheckedModeBanner: false,
@@ -43,6 +46,9 @@ class _MyAppState extends State<MyApp> {
                     // Add theme
                     // Add dark theme
                     // Add theme mode
+                    theme: theme.light(settings.value.sourceColor),
+                    darkTheme: theme.dark(settings.value.sourceColor), // Add this line
+                    themeMode: theme.themeMode(), // Add this line
                     routeInformationParser: appRouter.routeInformationParser,
                     routeInformationProvider:
                         appRouter.routeInformationProvider,

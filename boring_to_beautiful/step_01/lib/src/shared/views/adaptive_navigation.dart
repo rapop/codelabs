@@ -16,30 +16,47 @@ class AdaptiveNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, dimens) {
+    return LayoutBuilder
+    (
+      builder: (context, dimens) 
+      {
         // Tablet Layout
+        if (dimens.maxWidth >= 600) { // Add this line
         // Add maxWidth constraint check
+        return Scaffold
+          (
+            body: Row(
+              children: [
+                NavigationRail(
+                  extended: dimens.maxWidth >= 800,
+                  minExtendedWidth: 180,
+                  destinations: destinations
+                      .map((e) => NavigationRailDestination(
+                            icon: e.icon,
+                            label: Text(e.label),
+                          ))
+                      .toList(),
+                  selectedIndex: selectedIndex,
+                  onDestinationSelected: onDestinationSelected,
+                ),
+                Expanded(child: child),
+              ],
+            ),
+          );
+        // Add closing curly bracket
+        } // Add this line
+
+        // Mobile Layout
+        // Add from here...
         return Scaffold(
-          body: Row(
-            children: [
-              NavigationRail(
-                extended: dimens.maxWidth >= 800,
-                minExtendedWidth: 180,
-                destinations: destinations
-                    .map((e) => NavigationRailDestination(
-                          icon: e.icon,
-                          label: Text(e.label),
-                        ))
-                    .toList(),
-                selectedIndex: selectedIndex,
-                onDestinationSelected: onDestinationSelected,
-              ),
-              Expanded(child: child),
-            ],
+          body: child,
+          bottomNavigationBar: NavigationBar(
+            destinations: destinations,
+            selectedIndex: selectedIndex,
+            onDestinationSelected: onDestinationSelected,
           ),
         );
-        // Add closing curly bracket
+        // ... To here.
 
         // Add return for mobile layout
       },
